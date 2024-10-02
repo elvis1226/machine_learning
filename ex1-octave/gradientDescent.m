@@ -18,12 +18,14 @@ for iter = 1:num_iters
     %
 
     rmi = X * theta - y;
-    x2 = X(:,2);
-    temp1 = theta(1) - (sum(rmi) * alpha / m);
-    temp2 = theta(2) - (sum(rmi' * x2) * alpha / m);
-    theta(1) = temp1;
-    theta(2) = temp2;
+    
+    fsize = size(X, 2);
+    theta(1) = theta(1) - (sum(rmi) * alpha / m);
 
+    for i=2:fsize
+        xx = X(:,i);
+        theta(i) = theta(i) - (sum(rmi' * xx) * alpha / m);
+    end
 
 
     % ============================================================

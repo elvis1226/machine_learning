@@ -39,6 +39,9 @@ X = data(:, 1:2);
 y = data(:, 3);
 m = length(y);
 
+
+
+
 % Print out some data points
 fprintf('First 10 examples from the dataset: \n');
 fprintf(' x = [%.0f %.0f], y = %.0f \n', [X(1:10,:) y(1:10,:)]');
@@ -53,7 +56,9 @@ fprintf('Normalizing Features ...\n');
 
 % Add intercept term to X
 X = [ones(m, 1) X];
-
+mu
+sigma
+X
 
 %% ================ Part 2: Gradient Descent ================
 
@@ -104,9 +109,10 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
 
+price = [1 1650 3] * theta; % You should change this
 
+ 
 % ============================================================
 
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
