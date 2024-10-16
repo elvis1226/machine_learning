@@ -63,20 +63,30 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+X = [ones(m, 1) X];
+ny = zeros(m, num_labels);
+for i=1:m
+ ny(i, y(i)) = 1; % 5000 x 10
+end;
 
+a1 = X; % 5000 * 401
+z2 = X*Theta1'; % 5000 x 25
+a2p = sigmoid(z2); % 5000 x 25
+a2 = [ones(m, 1) a2p]; % X: 5000 x 401, Theta1 : 25 x 401 = 5000 x 26
 
+a3 = sigmoid(a2 * Theta2') ; % Theta2 : 10 * 26 = 5000 * 10
 
+val = -(log(a3).*ny) - log(1-a3).*(1-ny);
+J = sum(sum(val'))/ m;
 
+t1Cols = size(Theta1, 2);
+t2Cols = size(Theta2, 2);
+ntheta1 = Theta1(:, 2:t1Cols);
+ntheta2 = Theta2(:, 2:t2Cols);
 
+totalTheta = (sum(sum(ntheta1.^2)) + sum(sum(ntheta2.^2))) * lambda / (2*m);
 
-
-
-
-
-
-
-
-
+J = J + totalTheta;
 
 
 
@@ -85,7 +95,17 @@ Theta2_grad = zeros(size(Theta2));
 % =========================================================================
 
 % Unroll gradients
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
+
+e3 = a3 - ny; % e3: 5000 x 10, ntheta2 : 10 x 25
+e2 =  e3 * ntheta2 .* sigmoidGradient(z2); % 5000 * 25
+
+Theta2_grad = (e3' * a2)./m; %10 * 26
+Theta1_grad = (e2' * a1)./m; % 25 * 401
+
+Theta1_grad = [Theta1_grad(:,1) (Theta1_grad(:, 2:t1Cols) + ntheta1 * lambda / m)];
+Theta2_grad = [Theta2_grad(:,1) (Theta2_grad(:, 2:t2Cols) + ntheta2 * lambda / m)];
+
+grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 end
