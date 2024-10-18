@@ -216,5 +216,10 @@ for i = 1:length(lambda_vec)
             lambda_vec(i), error_train(i), error_val(i));
 end
 
+%option to test error
+theta_3 = trainLinearReg(X_poly, y, 3);
+test_err= linearRegCostFunction(X_poly_test, ytest, theta_3, 0);
+
+fprintf('better test error %f for lamda=3, expected : 3.8599\n', test_err);
 fprintf('Program paused. Press enter to continue.\n');
 pause;
