@@ -21,10 +21,12 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
+rows = size(X,1);
+for r = 1 : rows
+   rem = X(r,:) - centroids;
+   [val, valIdx] = min(sum((rem.^2)'));
+   idx(r) = valIdx;
+end
 
 
 % =============================================================
